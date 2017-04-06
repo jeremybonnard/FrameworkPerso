@@ -1,3 +1,3 @@
 <?php
 	$config = array();
-	$config['controlleur_defaut'] = "defaut";
+	$config['controleur_defaut'] = "defaut";

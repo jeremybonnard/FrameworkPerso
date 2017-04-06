@@ -55,9 +55,9 @@
 
 		<div class="code">petitmvc/mesApplis/vues/vue_index.php</div>
 
-		<p>Le controlleur pour cette pag est la :</p>
+		<p>Le controleur pour cette pag est la :</p>
 
-		<div class="code">petitmvc/mesApplis/controlleur/defaut.php</div>
+		<div class="code">petitmvc/mesApplis/controleur/defaut.php</div>
 
 	</body>
 </html>

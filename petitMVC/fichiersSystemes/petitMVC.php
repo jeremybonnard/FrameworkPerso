@@ -22,17 +22,17 @@ if(!defined('PMVC_DOSSIER_APPLI'))
 
 // set_include_path pour spl_autoload
 set_include_path(get_include_path()
-	. PATH_SEPARATOR . PMVC_DOSSIER_APPLI . 'controlleurs' . DS
+	. PATH_SEPARATOR . PMVC_DOSSIER_APPLI . 'controleurs' . DS
 	. PATH_SEPARATOR . PMVC_DOSSIER_APPLI . 'modeles' . DS
 	. PATH_SEPARATOR . PMVC_DOSSIER_APPLI . 'configs' . DS
 	. PATH_SEPARATOR . PMVC_DOSSIER_APPLI . 'plugins' . DS
 	. PATH_SEPARATOR . PMVC_DOSSIER_APPLI . 'vues' . DS
-	. PATH_SEPARATOR . PMVC_BASEDIR . 'mesFichiers' . DS . 'controlleurs' . DS
+	. PATH_SEPARATOR . PMVC_BASEDIR . 'mesFichiers' . DS . 'controleurs' . DS
 	. PATH_SEPARATOR . PMVC_BASEDIR . 'mesFichiers' . DS . 'mmodelesodels' . DS
 	. PATH_SEPARATOR . PMVC_BASEDIR . 'mesFichiers' . DS . 'configs' . DS
 	. PATH_SEPARATOR . PMVC_BASEDIR . 'mesFichiers' . DS . 'plugins' . DS
 	. PATH_SEPARATOR . PMVC_BASEDIR . 'mesFichiers' . DS . 'vues' . DS
-	. PATH_SEPARATOR . PMVC_BASEDIR . 'fichiersSystemes' . DS . 'controlleurs' . DS
+	. PATH_SEPARATOR . PMVC_BASEDIR . 'fichiersSystemes' . DS . 'controleurs' . DS
 	. PATH_SEPARATOR . PMVC_BASEDIR . 'fichiersSystemes' . DS . 'modeles' . DS
 	. PATH_SEPARATOR . PMVC_BASEDIR . 'fichiersSystemes' . DS . 'configs' . DS
 	. PATH_SEPARATOR . PMVC_BASEDIR . 'fichiersSystemes' . DS . 'plugins' . DS
@@ -64,7 +64,7 @@ class pmvc
 	//Attributs
 
 	public $config = null;
-	public $controlleur = null;
+	public $controleur = null;
 	public $action = null;
 	public $path_info = null;
 	public $url_segments = null;
@@ -107,8 +107,8 @@ class pmvc
 		// découpage de l'url
 		$this->decoupageElementsUrl();
 
-		// Initialisation du controlleur
-		$this->configControlleur();
+		// Initialisation du controleur
+		$this->configcontroleur();
 
 		// Recuperation des action
 		$this->configAction();
@@ -122,8 +122,8 @@ class pmvc
 			ob_start();
 		}
 
-		// On demande au controlleur de faire l'action
-		$this->controlleur->{$this->action}();
+		// On demande au controleur de faire l'action
+		$this->controleur->{$this->action}();
 
 		if($this->config['timer'])
 		{
@@ -165,37 +165,37 @@ class pmvc
 		}
 	}
 
-	public function configControlleur()
+	public function configcontroleur()
 	{
-		if(!empty($this->config['root_controlleur']))
+		if(!empty($this->config['root_controleur']))
 		{
-			$nom_controlleur = $this->config['root_controlleur'];
-			$fichier_controlleur = "{$nom_controlleur}.php";
+			$nom_controleur = $this->config['root_controleur'];
+			$fichier_controleur = "{$nom_controleur}.php";
 		}
 		else
 		{
 			if(!empty($this->segments_url[1]))
 			{
-				$nom_controlleur =  preg_replace('!\W!','',$this->segments_url[1]);
+				$nom_controleur =  preg_replace('!\W!','',$this->segments_url[1]);
 			}
 			else
 			{
-                $nom_controlleur = $this->config['controlleur_defaut'];
+                $nom_controleur = $this->config['controleur_defaut'];
             }
-            $fichier_controlleur = "{$nom_controlleur}.php";
+            $fichier_controleur = "{$nom_controleur}.php";
 
-			if(!stream_resolve_include_path($fichier_controlleur))
+			if(!stream_resolve_include_path($fichier_controleur))
 			{
-				$nom_fichier = $this->config['controlleur_defaut'];
-				$fichier_controlleur = "{$nom_controlleur}.php";
+				$nom_fichier = $this->config['controleur_defaut'];
+				$fichier_controleur = "{$nom_controleur}.php";
 			}
 		}
 
-		include($fichier_controlleur);
+		include($fichier_controleur);
 
-		// On instancie le controlleur
-		$nom_class_controlleur = $nom_controlleur.'_Controlleur';
-		$this->controlleur = new $nom_class_controlleur(true);
+		// On instancie le controleur
+		$nom_class_controleur = $nom_controleur.'_controleur';
+		$this->controleur = new $nom_class_controleur(true);
 
 	}
 
@@ -235,11 +235,11 @@ class pmvc
 			{
 				if(is_array($librairie))
 				{
-					$this->controlleur->load->librairie($librairie[0], $library[1]);
+					$this->controleur->load->librairie($librairie[0], $library[1]);
 				}
 				else
 				{
-					$this->controlleur->load->librairie($library);
+					$this->controleur->load->librairie($library);
 				}
 			}
 		}
@@ -256,7 +256,7 @@ class pmvc
 		{
 			foreach($config['models'] as $model)
 			{
-				$this->controlleur->load->model($model);
+				$this->controleur->load->model($model);
 			}
 		}
 	}
