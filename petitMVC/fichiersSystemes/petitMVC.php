@@ -74,7 +74,7 @@ class pmvc
     $controlleur = null;
     $action = null;
     $path_info = null;
-    $url_segments = null;
+    $segments_url = null;
 
     // Constructeur
     public function __construct($id='default')
@@ -181,9 +181,125 @@ class pmvc
         }
         else
         {
-            $nom_controlleur = !empty($this->segments_url[1]) ? preg_replace('!\W!','',$this->segments_url[1]) : $this->config['controlleur_default'];
+            if(!empty($this->segments_url[1]))
+            {
+                $nom_controlleur =  preg_replace('!\W!','',$this->segments_url[1])
+            }
+            else
+			{
+                $nom_controlleur = $this->config['controlleur_default'];
+            }
             $fichier_controlleur = "{$nom_controlleur}.php";
+
+			if(!stream_resolve_include_path($fichier_controlleur))
+			{
+				$nom_fichier = $this->config['controlleur_default'];
+				$fichier_controlleur = "{$nom_controlleur}.php";
+			}
         }
+
+		include($fichier_controlleur);
+
+		// On instancie le controlleur
+		$nom_class_controlleur = $nom_controlleur.'_Controlleur';
+		$this->controlleur = new $nom_class_controlleur(true);
+
     }
+
+	public function configAction()
+	{
+		if(!empty($this->config['root_action']))
+		{
+			$this->action = $this->config['root_action'];
+		}
+		else
+		{
+			if(!empty($this->segments_url[2]))
+			{
+				$this->action = $this->segments_url[2]
+			}
+			elseif(!empty($this->config['action_default']))
+			{
+				$this->action = $this->config['action_default'];
+			}
+			else
+			{
+				$this->action = 'index';
+			}
+			if(substr($this->action,0,1)=="_")
+			{
+				throw new Exception("L'action '{$this->action}' n'a pas été trouvé ");
+			}
+		}
+	}
+
+	public function lancerAutoloaders()
+	{
+		include('config_autoload.php');
+		if(!empty($config['librairies']))
+		{
+			foreach($config['librairies'] as $librairie)
+			{
+				if(is_array($librairie))
+				{
+					$this->controlleur->load->librairie($librairie[0], $library[1]);
+				}
+				else
+				{
+					$this->controlleur->load->librairie($library);
+				}
+			}
+		}
+
+		if(!empty($config['scripts']))
+		{
+			foreach($config['scripts'] as $script)
+			{
+				$this->controller->load->script($script);
+			}
+		}
+
+		if(!empty($config['models']))
+		{
+			foreach($config['models'] as $model)
+			{
+				$this->controlleur->load->model($model);
+			}
+		}
+	}
+
+	public static function instance($new_instance = null, $id = 'default')
+	{
+		static $instance = array();
+		if( isset($new_instance) && is_object($new_instance))
+		{
+			$instance[$id] = $new_instance;
+		}
+
+		return $instance[$id];
+	}
+
+	public static function timer($id = null, $id2 = null)
+	{
+		static $dates = array();
+		if($id !== null && $id2 !== null)
+		{
+			if(isset($dates[$id]) && isset($dates[$id2]))
+			{
+				return $dates[$id2] - $dates[$id];
+			}
+			else {
+				return false;
+			}
+		}
+		elseif( $id !== null )
+		{
+			return$dates[$id] = microtime(true);
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 }
