@@ -187,13 +187,13 @@ class pmvc
             }
             else
 			{
-                $nom_controlleur = $this->config['controlleur_default'];
+                $nom_controlleur = $this->config['controlleur_defaut'];
             }
             $fichier_controlleur = "{$nom_controlleur}.php";
 
 			if(!stream_resolve_include_path($fichier_controlleur))
 			{
-				$nom_fichier = $this->config['controlleur_default'];
+				$nom_fichier = $this->config['controlleur_defaut'];
 				$fichier_controlleur = "{$nom_controlleur}.php";
 			}
         }
