@@ -176,7 +176,7 @@ class pmvc
 		{
 			if(!empty($this->segments_url[1]))
 			{
-				$nom_controlleur =  preg_replace('!\W!','',$this->segments_url[1])
+				$nom_controlleur =  preg_replace('!\W!','',$this->segments_url[1]);
 			}
 			else
 			{
@@ -209,7 +209,7 @@ class pmvc
 		{
 			if(!empty($this->segments_url[2]))
 			{
-				$this->action = $this->segments_url[2]
+				$this->action = $this->segments_url[2];
 			}
 			elseif(!empty($this->config['action_default']))
 			{
