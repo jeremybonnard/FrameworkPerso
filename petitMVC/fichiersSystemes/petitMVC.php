@@ -229,17 +229,17 @@ class pmvc
 	public function lancerAutoloaders()
 	{
 		include('config_autoload.php');
-		if(!empty($config['librairies']))
+		if(!empty($config['bibliotheques']))
 		{
-			foreach($config['librairies'] as $librairie)
+			foreach($config['bibliotheques'] as $bibliotheque)
 			{
-				if(is_array($librairie))
+				if(is_array($bibliotheque))
 				{
-					$this->controleur->load->librairie($librairie[0], $library[1]);
+					$this->controleur->load->bibliotheque($bibliotheque[0], $library[1]);
 				}
 				else
 				{
-					$this->controleur->load->librairie($library);
+					$this->controleur->load->bibliotheque($library);
 				}
 			}
 		}
